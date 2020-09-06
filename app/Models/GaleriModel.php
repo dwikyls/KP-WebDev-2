@@ -18,4 +18,8 @@ class GaleriModel extends Model
 
         return $this->where(['id' => $id])->first();
     }
+
+    public function getKategori()
+    {
+    }
 }

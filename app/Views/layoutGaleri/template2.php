@@ -16,8 +16,6 @@
 
 <body>
 
-    <?= $this->include('layoutGaleri/menu'); ?>
-
     <?= $this->renderSection('content'); ?>
 
     <!-- Optional JavaScript -->

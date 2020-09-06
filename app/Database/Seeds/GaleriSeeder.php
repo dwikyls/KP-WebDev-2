@@ -8,15 +8,15 @@ class GaleriSeeder extends \CodeIgniter\Database\Seeder
 {
     public function run()
     {
-        $faker = \Faker\Factory::create('id_ID');
+        $faker = \Faker\Factory::create('en_US');
 
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $data = [
                 'nama_pengupload'       => $faker->name,
                 'jabatan_pengupload'    => $faker->jobTitle,
-                'detail'                => $faker->text,
-                'gambar'                => $faker->imageUrl($width = 200, $height = 200),
-                'kategori'              => 'Jalan Tol',
+                'detail'                => $faker->text($maxNbChars = 1000),
+                'gambar'                => $faker->image($dir = 'img', $width = 250, $height = 250, 'city', false),
+                'kategori'              => $faker->randomElement($array = array('Jalan Tol', 'Jembatan', 'Underpass')),
                 'created_at'            => Time::createFromTimestamp($faker->unixTime()),
                 'updated_at'            => Time::now()
             ];

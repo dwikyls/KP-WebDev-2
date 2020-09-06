@@ -12,6 +12,7 @@ class Galeri extends BaseController
         $this->galeriModel = new GaleriModel();
     }
 
+    //INDEX
     public function index()
     {
 
@@ -26,12 +27,18 @@ class Galeri extends BaseController
 
         return view('galeri/index', $data);
     }
+
+    //TAMPILKAN SEMUA DATA
     public function detail($id)
     {
+        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
         $data = [
             'title' => 'Detail gambar',
             'galeri' => $this->galeriModel->getGaleri($id),
-            'validation' => \Config\Services::validation()
+            'validation' => \Config\Services::validation(),
+            'pager' => $this->galeriModel->pager,
+            'current_page' => $current_page,
+            'desk' => $this->galeriModel->paginate(1, 'galeri')
         ];
 
         if (empty($data['galeri'])) {
@@ -40,19 +47,21 @@ class Galeri extends BaseController
 
         return view('galeri/detail', $data);
     }
+
+    //SIMPAN DATA BARU
     public function save()
     {
         if (!$this->validate([
             'nama_pengupload' => [
                 'rules' => 'required[galeri.nama_pengupload]',
                 'errors' => [
-                    'required' => 'Nama Pengupload harus diisi!'
+                    'required' => 'Nama Pengupload harus di isi!'
                 ]
             ],
             'gambar' => [
-                'rules' => 'max_size[gambar,1024]|is_image[gambar]|mime_in[gambar,image/jpg,image/jpeg,image/png]',
+                'rules' => 'max_size[gambar,2048]|is_image[gambar]|mime_in[gambar,image/jpg,image/jpeg,image/png]',
                 'errors' => [
-                    'max_size' => 'Batas maximum upload 1MB!',
+                    'max_size' => 'Batas maximum upload 2MB!',
                     'is_image' => 'File yang dipilih harus gambar!',
                     'mime_in' => 'Kesalahan ekstensi!'
                 ]
@@ -84,16 +93,8 @@ class Galeri extends BaseController
         session()->setFlashData('pesan', 'Data berhasil ditambahkan!');
         return redirect()->to('/galeri');
     }
-    public function edit($id)
-    {
-        $data = [
-            'title' => 'Edit Data',
-            'validation' => \Config\Services::validation(),
-            'galeri' => $this->galeriModel->find($id)
-        ];
 
-        return view('galeri/edit', $data);
-    }
+    //UPDATE DATA
     public function update($id)
     {
         if (!$this->validate([
@@ -112,20 +113,17 @@ class Galeri extends BaseController
                 ]
             ]
         ])) {
-            return redirect()->to('/galeri/edit/' . $this->request->getVar('id'))->withInput();
+            return redirect()->to('/galeri/detail/' . $this->request->getVar('id'))->withInput();
         }
 
         $file_gambar = $this->request->getFile('gambar');
 
-        //cek gambar, apakah tetap gambar lama
         if ($file_gambar->getError() == 4) {
             $nama_gambar = $this->request->getVar('sampulLama');
         } else {
-            //generate nama file random 
+
             $nama_gambar = $file_gambar->getRandomName();
-            //pindahkan gambar
             $file_gambar->move('img', $nama_gambar);
-            //karena gambarnya baru, berarti hapus gambar lama
             unlink('img/' . $this->request->getVar('sampulLama'));
         }
 
@@ -139,47 +137,69 @@ class Galeri extends BaseController
         ]);
 
         session()->setFlashData('pesan', 'Data berhasil diubah!');
-        return redirect()->to('/galeri');
+        return redirect()->to('/galeri/detail/' . $id);
     }
+
+    //DELETE DATA
     public function delete($id)
     {
         $galeri = $this->galeriModel->find($id);
+
         if ($galeri['gambar'] != 'default.jpg') {
             unlink('img/' . $galeri['gambar']);
         }
+
         $this->galeriModel->delete($id);
 
         session()->setFlashData('pesan', 'Data berhasil dihapus!');
         return redirect()->to('/galeri');
     }
+
+    //TAMPILKAN DATA KATEGORI JALAN TOL SAJA
     public function jalanTol()
     {
+        $db = \Config\Database::connect();
+        $query = $db->query('SELECT * FROM galeri where kategori = "Jalan Tol"')->getResultArray();
+
         $data = [
-            'title' => 'Jalan Tol',
-            'validation' => \Config\Services::validation()
-
+            'title' => 'Galeri',
+            'validation' => \Config\Services::validation(),
+            'galeri' => $query
         ];
-
         return view('/galeri/jalanTol', $data);
     }
+
+    //TAMPILKAN DATA KATEGORI JEMBATAN SAJA
     public function jembatan()
     {
+        $db = \Config\Database::connect();
+        $query = $db->query('SELECT * FROM galeri where kategori = "Jembatan"')->getResultArray();
+
         $data = [
-            'title' => 'Jembatan',
-            'validation' => \Config\Services::validation()
+            'title' => 'Galeri',
+            'validation' => \Config\Services::validation(),
+            'galeri' => $query
         ];
 
         return view('/galeri/jembatan', $data);
     }
+
+    //TAMPILKAN DATA KATEGORI UNDERPASS SAJA
     public function underpass()
     {
+        $db = \Config\Database::connect();
+        $query = $db->query('SELECT * FROM galeri where kategori = "Underpass"')->getResultArray();
+
         $data = [
             'title' => 'Underpass',
-            'validation' => \Config\Services::validation()
+            'validation' => \Config\Services::validation(),
+            'galeri' => $query
         ];
 
         return view('/galeri/underpass', $data);
     }
+
+    //DATA VIDEO
     public function video()
     {
         $data = [

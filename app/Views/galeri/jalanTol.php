@@ -4,9 +4,27 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
-            <h1>Oops! Something wrong here...</h1>
+        <div class="col text-center mt-3">
+            <a href="/galeri" class="btn btn-light">All<span class="sr-only">(current)</span></a>
+            <a href="/jalanTol" class="btn btn-success">Jalan Tol</a>
+            <a href="/jembatan" class="btn btn-light">Jembatan</a>
+            <a href="/underpass" class="btn btn-light">Underpass</a>
         </div>
+    </div>
+    <hr>
+</div>
+
+<div class="container">
+    <div class="row">
+        <?php foreach ($galeri as $g) : ?>
+            <div class="col-3">
+                <div class="row justify-content-center"><a href="/galeri/detail/<?= $g['id']; ?>"><img width="200px" height="200px" src="/img/<?= $g['gambar']; ?>"></a></div>
+                <div class="row">
+                    <div class="col"><?= $g['nama_pengupload']; ?></div>
+                    <div class="col"><?= $g['created_at']; ?></div>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
 

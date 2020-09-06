@@ -25,7 +25,7 @@ class Galeri extends Migration
 			],
 			'detail'       		=> [
 				'type'          => 'VARCHAR',
-				'constraint'    => '255',
+				'constraint'    => '1000',
 			],
 			'gambar'       		=> [
 				'type'          => 'VARCHAR',
