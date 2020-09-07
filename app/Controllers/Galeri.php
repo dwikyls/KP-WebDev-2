@@ -17,6 +17,7 @@ class Galeri extends BaseController
     {
 
         $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
+
         $data = [
             'title' => 'Galeri',
             'galeri' => $this->galeriModel->paginate(16, 'galeri'),
@@ -158,27 +159,32 @@ class Galeri extends BaseController
     //TAMPILKAN DATA KATEGORI JALAN TOL SAJA
     public function jalanTol()
     {
-        $db = \Config\Database::connect();
-        $query = $db->query('SELECT * FROM galeri where kategori = "Jalan Tol"')->getResultArray();
+
+        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
 
         $data = [
             'title' => 'Galeri',
             'validation' => \Config\Services::validation(),
-            'galeri' => $query
+            'galeri' => $this->galeriModel->getKategori('Jalan Tol'),
+            'current_page' => $current_page,
+            'pager' => $this->galeriModel->pager
         ];
+
         return view('/galeri/jalanTol', $data);
     }
 
     //TAMPILKAN DATA KATEGORI JEMBATAN SAJA
     public function jembatan()
     {
-        $db = \Config\Database::connect();
-        $query = $db->query('SELECT * FROM galeri where kategori = "Jembatan"')->getResultArray();
+
+        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
 
         $data = [
             'title' => 'Galeri',
             'validation' => \Config\Services::validation(),
-            'galeri' => $query
+            'galeri' => $this->galeriModel->getKategori('Jembatan'),
+            'current_page' => $current_page,
+            'pager' => $this->galeriModel->pager
         ];
 
         return view('/galeri/jembatan', $data);
@@ -187,13 +193,15 @@ class Galeri extends BaseController
     //TAMPILKAN DATA KATEGORI UNDERPASS SAJA
     public function underpass()
     {
-        $db = \Config\Database::connect();
-        $query = $db->query('SELECT * FROM galeri where kategori = "Underpass"')->getResultArray();
+
+        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
 
         $data = [
             'title' => 'Underpass',
             'validation' => \Config\Services::validation(),
-            'galeri' => $query
+            'galeri' => $this->galeriModel->getKategori('Underpass'),
+            'current_page' => $current_page,
+            'pager' => $this->galeriModel->pager
         ];
 
         return view('/galeri/underpass', $data);

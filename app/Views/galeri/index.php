@@ -23,11 +23,10 @@
         </div>
     </div>
 
+    <!-- GAMBAR -->
     <div class="row">
         <?php foreach ($galeri as $g) : ?>
             <div class="col-3">
-
-                <!-- GAMBAR -->
                 <div class="row justify-content-center">
                     <a href="/galeri/detail/<?= $g['id']; ?>">
                         <img width="250px" height="250px" src="/img/<?= $g['gambar']; ?>">
@@ -50,4 +49,5 @@
         </div>
     </div>
 </div>
+
 <?= $this->endSection(); ?>

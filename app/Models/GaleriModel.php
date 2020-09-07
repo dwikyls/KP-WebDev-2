@@ -19,7 +19,8 @@ class GaleriModel extends Model
         return $this->where(['id' => $id])->first();
     }
 
-    public function getKategori()
+    public function getKategori($kategori)
     {
+        return $this->where(['kategori' => $kategori])->paginate(16, 'galeri');
     }
 }
