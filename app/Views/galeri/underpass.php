@@ -25,7 +25,7 @@
     <!-- GAMBAR -->
     <div class="row">
         <?php foreach ($galeri as $g) : ?>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="row justify-content-center">
                     <a href="/galeri/detail/<?= $g['id']; ?>">
                         <img width="250px" height="250px" src="/img/<?= $g['gambar']; ?>">
