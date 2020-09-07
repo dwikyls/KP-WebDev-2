@@ -18,6 +18,7 @@
 
     <?= $this->include('layoutGaleri/navbar'); ?>
     <?= $this->renderSection('content'); ?>
+    <?= $this->include('layoutGaleri/listGambar'); ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

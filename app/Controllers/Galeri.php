@@ -212,7 +212,8 @@ class Galeri extends BaseController
     {
         $data = [
             'title' => 'Video',
-            'validation' => \Config\Services::validation()
+            'validation' => \Config\Services::validation(),
+            helper('form')
         ];
 
         return view('/galeri/video', $data);
