@@ -20,18 +20,14 @@
 </div>
 
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
 
         <!-- TAMPILAN GAMBAR -->
-        <div class="col-6 text-center border-right">
-            <img width="400px" src="/img/<?= $galeri['gambar']; ?>">
-            <div class="row">
-                <div class="col">
-                </div>
-            </div>
+        <div class="col-md-6 m-2">
+            <img class="w-100" src="/img/<?= $galeri['gambar']; ?>">
         </div>
 
-        <div class="col-5 ml-5">
+        <div class="col-md-5 m-3">
             <div class="row">
 
                 <!-- DATA DIRI PENGUPLOAD -->
@@ -47,7 +43,7 @@
                             <h3>...</h3>
                         </button>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <!-- EDIT -->
                             <a class="dropdown-item" data-toggle="modal" data-target="#edit" href="">Edit</a>
 
@@ -59,64 +55,60 @@
                             </form>
                         </div>
 
-
+                        <!-- Modal -->
                         <div class="modal fade" id="edit" tabindex="-1">
-                            <div class="modal-dialog modal-xl modal-dialog-centered">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content">
-
-                                    <!-- HEADER MODAL -->
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Edit data gambar</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <!-- BODY MODAL -->
                                     <div class="modal-body">
+                                        <h1>Upload File</h1>
                                         <form action="/galeri/update/<?= $galeri['id']; ?>" method="POST" enctype="multipart/form-data">
                                             <?= csrf_field(); ?>
                                             <input type="hidden" name="sampulLama" value="<?= $galeri['gambar']; ?>">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class=" col dropzone-wrapper">
-                                                        <div class="dropzone-desc">
+                                            <div class="container justify-content-center">
+                                                <div class="row justify-content-center">
 
-                                                            <!-- PREVIEW GAMBAR -->
+                                                    <!-- input gambar -->
+                                                    <div class="col-lg-6 dropzone-wrapper">
+                                                        <div class="dropzone-desc">
                                                             <i class="glyphicon glyphicon-download-alt"></i>
                                                             <img src="/img/<?= $galeri['gambar']; ?>" class="img-thumbnail img-preview">
-                                                            <br><b><label id="label" for="gambar"><?= $galeri['gambar']; ?></label></b>
+                                                            <b><label id="label" for="gambar"><?= $galeri['gambar']; ?></label></b>
                                                         </div>
-
-                                                        <!-- INPUT GAMBAR -->
-                                                        <input type="file" class="dropzone form-control <?= ($validation->hasError('gambar')) ? 'is-invalid' : ''; ?>" id="gambar" name="gambar" onchange="previewImg()">
+                                                        <input type="file" id="gambar" name="gambar" class="dropzone form-control <?= ($validation->hasError('gambar')) ? 'is-invalid' : ''; ?>" onchange="previewImg()">
                                                         <div class="invalid-feedback">
                                                             <?= $validation->getError('gambar'); ?>
                                                         </div>
                                                     </div>
 
-                                                    <!-- EDIT NAMA PENGUPLOAD -->
-                                                    <div class="col preview-zone hidden">
+                                                    <!-- input nama pengupload -->
+                                                    <div class="col-lg-6 preview-zone hidden">
                                                         <div class="row m-2">
-                                                            <input type="text" class="form-control <?= ($validation->hasError('nama_pengupload')) ? 'is-invalid' : ''; ?>" id="nama_pengupload" name="nama_pengupload" placeholder="Nama" value="<?= (old('nama_pengupload')) ? old('nama_pengupload') : $galeri['nama_pengupload'] ?>" autofocus>
-                                                            <div class="invalid-feedback">
-                                                                <?= $validation->getError('nama_pengupload'); ?>
+                                                            <div class="col">
+                                                                <input type="text" maxlength="30" class="form-control <?= ($validation->hasError('nama_pengupload')) ? 'is-invalid' : ''; ?>" id="nama_pengupload" name="nama_pengupload" placeholder="Nama" value="<?= (old('nama_pengupload')) ? old('nama_pengupload') : $galeri['nama_pengupload'] ?>" autofocus>
+                                                                <div class="invalid-feedback">
+                                                                    <?= $validation->getError('nama_pengupload'); ?>
+                                                                </div>
+
                                                             </div>
                                                         </div>
 
-                                                        <!-- EDIT JABATAN PENGUPLOAD -->
+                                                        <!-- input jabatan pengupload -->
                                                         <div class="row m-2">
-                                                            <input type="text" id="jabatan_pengupload" name="jabatan_pengupload" placeholder="Jabatan" class="form-control" value="<?= (old('jabatan_pengupload')) ? old('jabatan_pengupload') : $galeri['jabatan_pengupload'] ?>">
+                                                            <div class="col">
+                                                                <input type="text" id="jabatan_pengupload" name="jabatan_pengupload" maxlength="30" placeholder="Jabatan" class="form-control" value="<?= (old('jabatan_pengupload')) ? old('jabatan_pengupload') : $galeri['jabatan_pengupload'] ?>">
+                                                            </div>
                                                         </div>
 
-                                                        <!-- EDIT DESKRIPSI GAMBAR -->
+                                                        <!-- input deskripsi gambar -->
                                                         <div class="row m-2">
-                                                            <div class="col"><textarea placeholder="Tambahkan deskripsi..." name="detail" id="detail" cols="70" maxlength="1000" rows="5"><?= (old('detail')) ? old('detail') : $galeri['detail'] ?></textarea></div>
+                                                            <div class="col">
+                                                                <textarea class="form-control" placeholder="Tambahkan deskripsi..." cols="30" maxlength="1000" rows="4" name="detail" id="detail"><?= (old('detail')) ? old('detail') : $galeri['detail'] ?></textarea>
+                                                            </div>
                                                         </div>
 
-                                                        <!-- EDIT KATEGORI GAMBAR -->
+                                                        <!-- input kategori gambar -->
                                                         <div class="row m-2">
-                                                            <div class="col-12">
+                                                            <div class="col">
                                                                 <select class="custom-select" name="kategori" id="kategori">
                                                                     <option value="<?= (old('kategori')) ? old('kategori') : $galeri['kategori'] ?>" selected><?= ($galeri['kategori']) ? ($galeri['kategori']) : 'Pilih Kategori' ?></option>
                                                                     <option value="Jalan Tol">Jalan Tol</option>
@@ -126,8 +118,8 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- BUTTON SUBMIT -->
-                                                        <div class="row mt-2">
+                                                        <!-- simpan -->
+                                                        <div class="row m-2">
                                                             <div class="col">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                                                 <button type="submit" class="btn btn-warning text-white">Simpan</button>
