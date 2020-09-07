@@ -21,7 +21,7 @@
             <!-- Video -->
             <div class="col-2"><a class="btn btn-light" href="/video">Video</a></div>
 
-            <!-- Filter By -->
+            <!-- Filter By DROPDOWN-->
             <div class="col-2">
                 <button class="btn btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown">
                     Filter By
@@ -104,7 +104,6 @@
                                                     <button type="submit" class="btn btn-warning text-white">Simpan</button>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

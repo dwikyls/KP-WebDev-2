@@ -10,6 +10,7 @@ class GaleriSeeder extends \CodeIgniter\Database\Seeder
     {
         $faker = \Faker\Factory::create('en_US');
 
+        //DUMMY DATA
         for ($i = 0; $i < 20; $i++) {
             $data = [
                 'nama_pengupload'       => $faker->name,
