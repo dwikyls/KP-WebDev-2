@@ -25,17 +25,17 @@
     <!-- GAMBAR -->
     <div class="row">
         <?php foreach ($galeri as $g) : ?>
-            <div class="col-3">
+            <div class="col">
                 <div class="row justify-content-center">
                     <a href="/galeri/detail/<?= $g['id']; ?>">
                         <img width="250px" height="250px" src="/img/<?= $g['gambar']; ?>">
                     </a>
                 </div>
 
-                <!-- NAMA PENGUPLOAD DAN TANGGAL POST -->
-                <div class="row">
-                    <div class="col"><b><?= $g['nama_pengupload']; ?></b></div>
-                    <div class="col text-right"><?= $g['created_at']; ?></div>
+                <!-- NAMA PENGUPLOAD DAN KAPAN DI POSTING -->
+                <div class="row justify-content-around">
+                    <b><?= $g['nama_pengupload']; ?></b>
+                    <p><?= $g['created_at']; ?></p>
                 </div>
             </div>
         <?php endforeach; ?>
