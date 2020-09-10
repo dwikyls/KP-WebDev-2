@@ -81,25 +81,6 @@ class Galeri extends BaseController
         return redirect()->to('/galeri');
     }
 
-    //DATA DETAIL
-    public function detail($id)
-    {
-        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
-        $data = [
-            'title' => 'Detail gambar',
-            'galeri' => $this->galeriModel->getGaleri($id),
-            'validation' => \Config\Services::validation(),
-            'pager' => $this->galeriModel->pager,
-            'current_page' => $current_page
-        ];
-
-        if (empty($data['galeri'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Gambar ' . $id . ' tidak ditemukan.');
-        }
-
-        return view('galeri/detail', $data);
-    }
-
     //UPDATE DATA
     public function update($id)
     {
