@@ -18,7 +18,7 @@ class GaleriModel extends Model
             return $this->findAll();
         }
 
-        return $this->where(['id' => $id])->first();
+        return $this->where(['id' => $id])->paginate(1, 'galeri');
     }
 
     // AMBIL DATA BERDASARKAN KATEGORI

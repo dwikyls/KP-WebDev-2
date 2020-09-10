@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
+
+        <!-- TAMBAH GAMBAR DROPDOWN -->
         <a class="btn btn-warning text-white" href="" data-toggle="modal" data-target="#tambah">Tambah gambar</a>
         <?php if (session()->getFlashData('pesan')) : ?>
             <div class="alert alert-success" role="alert">

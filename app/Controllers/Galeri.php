@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\GaleriModel;
+use App\Models\UploadsModel;
+use App\Models\VideoModel;
 
 class Galeri extends BaseController
 {
@@ -10,9 +12,11 @@ class Galeri extends BaseController
     public function __construct()
     {
         $this->galeriModel = new GaleriModel();
+        $this->uploadsModel = new UploadsModel();
+        $this->videoModel = new VideoModel();
     }
 
-    //INDEX
+    //INDEX TAMPILKAN SEMUA DATA
     public function index()
     {
 
@@ -23,31 +27,13 @@ class Galeri extends BaseController
             'galeri' => $this->galeriModel->paginate(16, 'galeri'),
             'pager' => $this->galeriModel->pager,
             'current_page' => $current_page,
-            'validation' => \Config\Services::validation()
+            'validation' => \Config\Services::validation(),
+            'page' => $this->galeriModel->getGaleri()
         ];
 
         return view('galeri/index', $data);
     }
 
-    //TAMPILKAN SEMUA DATA
-    public function detail($id)
-    {
-        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
-        $data = [
-            'title' => 'Detail gambar',
-            'galeri' => $this->galeriModel->getGaleri($id),
-            'validation' => \Config\Services::validation(),
-            'pager' => $this->galeriModel->pager,
-            'current_page' => $current_page,
-            'desk' => $this->galeriModel->paginate(1, 'galeri')
-        ];
-
-        if (empty($data['galeri'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Gambar ' . $id . ' tidak ditemukan.');
-        }
-
-        return view('galeri/detail', $data);
-    }
 
     //SIMPAN DATA BARU
     public function save()
@@ -95,6 +81,25 @@ class Galeri extends BaseController
         return redirect()->to('/galeri');
     }
 
+    //DATA DETAIL
+    public function detail($id)
+    {
+        $current_page = $this->request->getVar('page_galeri') ? $this->request->getVar('page_galeri') : 1;
+        $data = [
+            'title' => 'Detail gambar',
+            'galeri' => $this->galeriModel->getGaleri($id),
+            'validation' => \Config\Services::validation(),
+            'pager' => $this->galeriModel->pager,
+            'current_page' => $current_page
+        ];
+
+        if (empty($data['galeri'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Gambar ' . $id . ' tidak ditemukan.');
+        }
+
+        return view('galeri/detail', $data);
+    }
+
     //UPDATE DATA
     public function update($id)
     {
@@ -138,7 +143,7 @@ class Galeri extends BaseController
         ]);
 
         session()->setFlashData('pesan', 'Data berhasil diubah!');
-        return redirect()->to('/galeri/detail/' . $id);
+        return redirect()->to('/galeri');
     }
 
     //DELETE DATA
@@ -217,6 +222,41 @@ class Galeri extends BaseController
         ];
 
         return view('/galeri/video', $data);
+    }
+
+    public function process()
+    {
+        $title = $this->request->getPost('title');
+        // dapatkan input file berupa array
+        $files = $this->request->getFiles();
+
+        if ($files) {
+
+            // buat value id random di table uploads
+            $random = rand(000, 999);
+
+            $data_uploads = [
+                'id' => $random,
+                'title' => $title
+            ];
+
+            $this->uploadsModel->insertUpload($data_uploads);
+
+            // ulangi insert gambar ke table galery menggunakan foreach
+            foreach ($files['file_upload'] as $img) {
+
+                $data_galery = [
+                    'upload_id' => $random,
+                    'gambar' => $img->getRandomName()
+                ];
+
+                $this->videoModel->insertGalery($data_galery);
+                // upload dengan random name
+                $img->move('img', $img->getRandomName());
+            }
+            session()->setFlashdata('success', 'Berhasil upload ' . count($files['file_upload']) . ' files');
+            return redirect()->to('/video');
+        }
     }
     //--------------------------------------------------------------------
 
